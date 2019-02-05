@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t bhaleraok65/react-test -f ./client/Dockerfile.dev ./client
+
+script: 
+  - docker run bhaleraok65/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t bhaleraok65/fibo-client ./client
+  - docker build -t bhaleraok65/fibo-server ./server
+  - docker build -t bhaleraok65/fibo-nginx ./nginx
+  - docker build -t bhaleraok65/fibo-worker ./worker
+  # login in to Travis CLI
+  - echo "$docker_id" | docker login -u "$docker_password" --password-stdin
+  # push images to dockerHub
+  - docker push bhaleraok65/fibo-client
+  - docker push bhaleraok65/fibo-server
+  - docker push bhaleraok65/fibo-nginx
+  - docker push bhaleraok65/fibo-worker
