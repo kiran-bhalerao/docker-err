@@ -14,8 +14,8 @@ after_success:
   - docker build -t bhaleraok65/fibo-nginx ./nginx
   - docker build -t bhaleraok65/fibo-worker ./worker
   # login in to Travis CLI
-  - echo "$docker_id" | docker login -u "$docker_password" --password-stdin
-  # push images to dockerHub
+  - echo "$DOCKER_IDs" | docker login -u "$DOCKER_PASSWORD" --password-stdin
+  # push images to dockerHub 
   - docker push bhaleraok65/fibo-client
   - docker push bhaleraok65/fibo-server
   - docker push bhaleraok65/fibo-nginx
